@@ -1,16 +1,28 @@
 # -*- coding: utf-8 -*-
 # app.py
 
+import os 
+
 # 1. Импортируем нужные инструменты (библиотеки)
-# VVVVVVVVVVVVVVVVVVVVVV ВАЖНО: Все необходимые импорты здесь VVVVVVVVVVVVVVVVVVVVVV
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy 
 
 # 2. Настраиваем приложение
 app = Flask(__name__)
 
-# Настраиваем, где будет храниться наша база данных (файл 'residents.db')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///residents.db'
+# Проверяем, существует ли переменная окружения DATABASE_URL, которую установит Render
+DATABASE_URL = os.environ.get('DATABASE_URL') 
+
+if DATABASE_URL:
+    # Если мы на Render, используем PostgreSQL
+    # 'postgres://' нужно заменить на 'postgresql+psycopg2://' для SQLAlchemy
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+psycopg2://", 1)
+    app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
+else:
+    # Если мы на вашем компьютере, используем SQLite
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///residents.db'
+
 # Отключаем ненужное уведомление
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -40,7 +52,6 @@ def index():
 
 
 # 5. Маршрут для добавления жильцов
-# VVVVVVVVVVVVVVVVVVVVVV ЭТА ФУНКЦИЯ БЫЛА ПОТЕРЯНА VVVVVVVVVVVVVVVVVVVVVV
 @app.route('/add', methods=['GET', 'POST'])
 def add_resident():
     if request.method == 'POST':
@@ -63,7 +74,6 @@ def add_resident():
         
     # Если просто зашли на страницу (GET), показываем форму
     return render_template('add_resident.html')
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 # 6. Основная часть для запуска приложения
