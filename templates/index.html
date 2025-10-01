@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Платформа Кондоминиума - Список Жильцов</title>
+</head>
+<body>
+    <p><a href="{{ url_for('add_resident') }}">➕ Добавить Нового Жильца</a></p>
+
+    <h1>Список Жильцов Кондоминиума</h1>
+
+    {% if жильцы %}
+        <table border="1" cellpadding="10" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Имя</th>
+                    <th>Квартира</th>
+                    <th>Контакт</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for resident in жильцы %}
+                    <tr>
+                        <td>{{ resident.id }}</td>
+                        <td>{{ resident.name }}</td>
+                        <td>{{ resident.apartment_number }}</td>
+                        <td>{{ resident.contact }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>В базе данных пока нет зарегистрированных жильцов.</p>
+    {% endif %}
+
+    <p>База данных работает!</p>
+</body>
+</html>

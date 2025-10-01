@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить Нового Жильца</title>
+</head>
+<body>
+    <h1>Добавить Нового Жильца</h1>
+    
+    <form method="POST" action="{{ url_for('add_resident') }}">
+        <p>
+            <label for="name">Имя (ФИО):</label>
+            <input type="text" id="name" name="name" required>
+        </p>
+        <p>
+            <label for="apartment_number">Номер Квартиры:</label>
+            <input type="text" id="apartment_number" name="apartment_number" required>
+        </p>
+        <p>
+            <label for="contact">Контакт (Телефон/Email):</label>
+            <input type="text" id="contact" name="contact">
+        </p>
+        <p>
+            <button type="submit">Добавить Жильца</button>
+        </p>
+    </form>
+    
+    <p><a href="{{ url_for('index') }}">Вернуться к списку жильцов</a></p>
+</body>
+</html>
